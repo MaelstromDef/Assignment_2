@@ -1,7 +1,8 @@
-//
-// Created by cse310 on 2/26/22.
-//
+/*
+ * heap.cc handles all heap functions for the Assignment 2 CSE310 project
+ */
 
+#include "heap.h"
 #include <iostream>
 #include "defns.h"
 
@@ -57,6 +58,7 @@ int DELETE_MAX(SOC* socArray, int size){
     socArray[0] = socArray[size - 1];           // Copy last element to first, overwriting max
     free(socArray[size - 1]);                   // Remove redundant element
     MAX_HEAPIFY(socArray, 1, size - 1); // Retain max heap property
+    int build = BUILD_MAX_HEAP(socArray, size);
 
     return 0;   // Successful runtime
 }
