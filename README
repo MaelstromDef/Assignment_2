@@ -1,0 +1,17 @@
+CSE310 Assignment 2
+
+This Assignment is meant to develop understanding of heap, hash table, and BTS data structures.
+In order to achieve this goal, the program must take in information from a cvs file that gathered data from the US Census
+Bureau and use it to perform some functions.
+
+Currently, the included files are:
+
+    heap.cc
+    defns.h
+
+TO-DO:
+
+    Finish the heap.cc file in order to correctly take in an array of SOC structures and perform max heap operations on it.
+
+DATE CREATED:   February 26/2022
+AUTHOR:         Aaron Huggins.
