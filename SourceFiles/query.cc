@@ -2,7 +2,7 @@
  * query.cc is a c++ file that handles the query functions called in Controller.cc
  */
 
-#include "query.h"
+#include "../HeaderFiles/query.h"
 #include <cstring>
 #include <iostream>
 

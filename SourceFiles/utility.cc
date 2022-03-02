@@ -2,7 +2,7 @@
  * utility.cc handles all the utility functions for the Assignment 2 CSE310 project
  */
 
-#include "utility.h"
+#include "../HeaderFiles/utility.h"
 
 // Resets int array "controller" values to 0
 void resetController(int* controller){

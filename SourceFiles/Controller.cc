@@ -3,9 +3,9 @@
  */
 
 #include <iostream>
-#include "defns.h"
-#include "utility.h"
-#include "query.h"
+#include "../HeaderFiles/defns.h"
+#include "../HeaderFiles/utility.h"
+#include "../HeaderFiles/query.h"
 
 int main(int argc, char* argv[]){
     // SIMULATE PROGRAM
@@ -57,7 +57,7 @@ int main(int argc, char* argv[]){
                     inputs[i][controller[i]] = '\0';
                     controller[i] = -1;
                 }
-                // add to current input
+                    // add to current input
                 else {
                     inputs[i][controller[i]] = c;
                     controller[i]++;
