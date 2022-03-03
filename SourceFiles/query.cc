@@ -48,17 +48,52 @@ void findMax(char workerType[INPUT_LENGTH], int numWorkers){
 
     // CREATE HEAP FROM SOC FILE
 
-    SOC *socArray;  // Holds first position of an SOC array
+    SOC **socArray;  // Holds an SOC array (memory allocated)
     socArray = getSOC();
 
-    int size = 0;
+    // Get size of the array
+    int size = -1;
     for(int i = 0; i < NUM_OCC; i++){
-        if(socArray[i].total == NULL){
+        if(socArray[i]->total == -1){
             size = i;
             break;
         }
     }
 
-    BUILD_MAX_HEAP(socArray, size);
-    DELETE_MAX(socArray, numWorkers);
+    // Entire socArray was used
+    if(size == -1)
+        size = NUM_OCC - 1;
+
+    // Turn socArray into a max heap
+    BUILD_MAX_HEAP(socArray,size);
+
+    // PRINT N MAX FROM HEAP
+    for(int i = 0; i < numWorkers; i++) {
+        SOC *printMe = DELETE_MAX(socArray, size);
+        std::cout << "\t" << printMe.occupation << ": ";
+
+        switch(w){
+            case male:
+                commaInt(printMe->male);
+                std::cout << std::endl;
+                break;
+            case female:
+                commaInt(printMe->female);
+                std::cout << std::endl;
+                break;
+            case total:
+                commaInt(printMe->total);
+                std::cout << std::endl;
+                break;
+            default:
+                std::cout << "ERROR WITH WORKER TYPE" << std::endl;
+                i = numWorkers;
+                break;
+        }
+    }
+
+    // DELETE HEAP
+    for(int i = size - 1; i >= 0; i--){
+        free(socArray[i]);
+    }
 }

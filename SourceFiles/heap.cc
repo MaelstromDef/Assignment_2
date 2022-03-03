@@ -16,7 +16,7 @@ int heap(){
  * i is the index of the heap element to be MAX_HEAPIFY'd (+ 1 for ease of use).
  * size is the total size of the socArray
  */
-int MAX_HEAPIFY(SOC* socArray, int i, int size){
+int MAX_HEAPIFY(SOC** socArray, int i, int size){
     // Get children indexes
     int l = i * 2;
     int r = l + 1;
@@ -24,19 +24,19 @@ int MAX_HEAPIFY(SOC* socArray, int i, int size){
     // Get the index of the largest value
     int key;
         // Check left
-    if( l <= size && socArray[l - 1].total > socArray[i - 1].total)
+    if( l <= size && socArray[l - 1]->total > socArray[i - 1]->total)
         key = l;
         // If not left, force i
     else
         key = i;
         // Check right
-    if( r <= size && socArray[r - 1].total > socArray[i - 1].total)
+    if( r <= size && socArray[r - 1]->total > socArray[i - 1]->total)
         key = r;
 
     // Swap heap values of parent and child if necessary, and then max-heapify everything under the swapped child
     if(key != i){
         // Swap values
-        SOC temp = socArray[i - 1];
+        SOC* temp = socArray[i - 1];
         socArray[i - 1] = socArray[key];
         socArray[key] = temp;
 
@@ -53,8 +53,8 @@ int MAX_HEAPIFY(SOC* socArray, int i, int size){
  * socArray is a pointer to a SOC array
  * size is the number of elements in socArray
  */
-SOC DELETE_MAX(SOC* socArray, int size){
-    SOC max = socArray[0];
+SOC* DELETE_MAX(SOC** socArray, int size){
+    SOC* max = socArray[0];
     socArray[0] = socArray[size - 1];           // Copy last element to first, overwriting max
     MAX_HEAPIFY(socArray, 1, size - 1); // Retain max heap property
     BUILD_MAX_HEAP(socArray, size);
@@ -68,7 +68,7 @@ SOC DELETE_MAX(SOC* socArray, int size){
  * socArray is a pointer to a SOC array
  * size is the number of elements in socArray
  */
-int BUILD_MAX_HEAP(SOC* socArray, int size){
+int BUILD_MAX_HEAP(SOC** socArray, int size){
     // Turns each element in socArray into a max heap from the last element to the first
     for(int i = size / 2; i >= 1; i--)
         MAX_HEAPIFY(socArray, i, size);

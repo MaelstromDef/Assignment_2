@@ -17,9 +17,14 @@ enum worker_type{
 
 // resetController(int*) sets all values in an int[4] to 0.
 void resetController(int* controller);
-// intFromString(char[]) returns an int contained in a string
-int intFromString(char[INPUT_LENGTH]);
+
+// intFromString(char[]) returns an int contained in a string.
+// CAUTION: intFromString will keep parsing string "input" until '\0' is found, ignoring any non-digit text within it.
+int intFromString(char* input);
+// commaInt(int) prints out an int that is comma seperated (such as 1999 -> 1,999)
+void commaInt(int toPrint);
+
 // getSOC returns the address of an SOC array that was created using malloc.
-SOC* getSOC();
+SOC** getSOC();
 
 #endif

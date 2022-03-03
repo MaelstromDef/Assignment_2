@@ -6,14 +6,27 @@ Bureau and use it to perform some functions.
 
 Currently, the included files are:
 
+    Controller.cc
     heap.cc
+    utility.cc
+    query.cc
+
+    heap.h
+    utility.h
+    query.h
     defns.h
 
 TO-DO:
 
     Finish find_max query and implement the find_ratio query.
-    find_max: created heap SOC array. Need to ensure that getSOC will work properly, and then finish implementation of
-    removing and displaying the max using the altered DELETE_MAX function from heap.h
+    find_max: created heap SOC array.
+        Need to ensure that getSOC will work properly,
+        and finish implementation of removing and displaying the max using the altered DELETE_MAX function from heap.h
+    find_ratio: not started.
+
+FINISHED FROM TO-DO:
+
+    Finished displaying/removing max.
 
 DATE CREATED:   February 26/2022
 AUTHOR:         Aaron Huggins.

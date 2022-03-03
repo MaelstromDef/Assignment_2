@@ -2,6 +2,8 @@
  * utility.cc handles all the utility functions for the Assignment 2 CSE310 project
  */
 
+#include <iostream>
+
 #include "../HeaderFiles/utility.h"
 
 // Resets int array "controller" values to 0
@@ -12,12 +14,56 @@ void resetController(int* controller){
 }
 
 // Gets an integer from char array "input"
-int intFromString(char input[INPUT_LENGTH]){
+int intFromString(char* input){
     int num = 0;
 
-    for(int i = 0; i < INPUT_LENGTH && input[i] != '\0'; i++){
-        num *= 10;
-        num += input[i] - 48;
+    for(int i = 0; input[i] != '\0'; i++){
+        if((input[i] >= '0') && (input[i] <= '9')) {
+            num *= 10;
+            num += input[i] - 48;
+        }
+    }
+}
+
+// Prints out comma version of an int
+void commaInt(int toPrint){
+    int log = 0;
+    int holder = 1;
+
+    // Find log of toPrint
+    while(toPrint / holder > 0){
+        log++;
+        holder *= 10;
+    }
+
+    // Set log and holder back to a point where toPrint / holder > 0 (single digit)
+    holder /= 10;
+    log--;
+
+    /*
+     * PRINTING:
+     *  Printing must be done in two parts, the first section and then the rest of the int.
+     *  This is because the first section can be 1, 2, or 3 digits long before the next comma comes.
+     */
+
+    // Print first section of the int
+    for(int i = log; i % 3 != 0; i--){
+        std::cout << toPrint / holder;
+        toPrint -= (toPrint / holder) * holder;         // Subtract toPrint by its largest digit
+        holder /= 10;
+        log--;
+    }
+
+    // Print rest of the int
+    while(log > 0){
+        if(log % 3 == 0)
+            std::cout << ",";
+
+        std::cout << toPrint / holder;
+        toPrint -= (toPrint / holder) * holder;         // Subtract toPrint by its largest digit
+
+        holder /= 10;
+        log--;
     }
 }
 
@@ -25,7 +71,7 @@ int intFromString(char input[INPUT_LENGTH]){
 /*
  * Returns socArray, which is an array of pointers to SOC elements
  */
-SOC** getSOC(SOC* socArray[NUM_OCC], worker_type w){
+SOC** getSOC(SOC* socArray[NUM_OCC]){
     // INITIALIZE VARS
     char c;             // char to hold file stream's input
     int i = 0;          // holds current index of socArray
