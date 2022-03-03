@@ -1,4 +1,5 @@
-#pragma once
+#ifndef QUERY_H
+#define QUERY_H
 
 #include "utility.h"
 
@@ -15,3 +16,5 @@ void findMax(char[INPUT_LENGTH], int);
 void findRatio(int, int);
 void findOccupation();
 void rangeOccupation();
+
+#endif

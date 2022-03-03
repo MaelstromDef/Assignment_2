@@ -1,4 +1,5 @@
-#pragma once
+#ifndef UTILITY_H
+#define UTILITY_H
 
 #include "defns.h"
 #include <fstream>
@@ -16,3 +17,5 @@ enum worker_type{
 void resetController(int* controller);
 int intFromString(char[INPUT_LENGTH]);
 SOC** getSOC(SOC**, worker_type);
+
+#endif

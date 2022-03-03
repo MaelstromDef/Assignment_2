@@ -2,7 +2,8 @@
 // Created by cse310 on 2/27/22.
 //
 
-#pragma once
+#ifndef HEAP_H
+#define HEAP_H
 
 #include "defns.h"
 
@@ -13,3 +14,5 @@ int heap();
 int MAX_HEAPIFY(SOC*, int, int);
 int DELETE_MAX(SOC*, int);
 int BUILD_MAX_HEAP(SOC*, int);
+
+#endif
