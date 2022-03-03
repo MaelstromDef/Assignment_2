@@ -10,17 +10,17 @@
 int main(int argc, char* argv[]){
     // SIMULATE PROGRAM
 
-    // Takes queries
-    char inputs[NUM_INPUTS][INPUT_LENGTH];
-    char c;
+    char inputs[NUM_INPUTS][INPUT_LENGTH];  // Holds input values
+    char c;                                 // takes input
 
-    // Controller variable
+    // Controller variable - Holds the index of the current query input or -1 if query input is finished.
     int controller[4];
     resetController(controller);
 
     while(std::cin.get(c)){
-        // PERFORM QUERY
+        // PERFORM QUERY ON NEW LINE
         if(c == '\n') {
+
             // Get Query Type
             query_type q = get_query(inputs);
 
@@ -52,12 +52,19 @@ int main(int argc, char* argv[]){
             // While the part of the input is active (controller[i] == -1 when it's inactive)
             if(controller[i] >= 0){
 
+                // Handles over sized index
+                if(controller[i] > INPUT_LENGTH){
+                    std::cout << "OVER SIZED INPUT AT: " << i << std::endl;
+                    resetController(controller);
+                    return -1;
+                }
+
                 // space indicates next part of input
                 if(c == ' ') {
                     inputs[i][controller[i]] = '\0';
                     controller[i] = -1;
                 }
-                    // add to current input
+                // add to current input
                 else {
                     inputs[i][controller[i]] = c;
                     controller[i]++;

@@ -1,9 +1,9 @@
 # Compiler
-CC=g++
+CC=gcc
 
 # File Directories
-CODEDIRS=. ./SourceFiles/
-HEADDIRS=. ./HeaderFiles/
+CODEDIRS=.	SourceFiles
+HEADDIRS=.	HeaderFiles
 
 OPT=-O0
 DEPFLAGS=-MP -MD

@@ -11,7 +11,9 @@ Currently, the included files are:
 
 TO-DO:
 
-    Finish the heap.cc file in order to correctly take in an array of SOC structures and perform max heap operations on it.
+    Finish find_max query and implement the find_ratio query.
+    find_max: created heap SOC array. Need to ensure that getSOC will work properly, and then finish implementation of
+    removing and displaying the max using the altered DELETE_MAX function from heap.h
 
 DATE CREATED:   February 26/2022
 AUTHOR:         Aaron Huggins.

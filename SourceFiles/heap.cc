@@ -53,13 +53,13 @@ int MAX_HEAPIFY(SOC* socArray, int i, int size){
  * socArray is a pointer to a SOC array
  * size is the number of elements in socArray
  */
-int DELETE_MAX(SOC* socArray, int size){
+SOC DELETE_MAX(SOC* socArray, int size){
+    SOC max = socArray[0];
     socArray[0] = socArray[size - 1];           // Copy last element to first, overwriting max
-    free(socArray[size - 1]);                   // Remove redundant element
     MAX_HEAPIFY(socArray, 1, size - 1); // Retain max heap property
-    int build = BUILD_MAX_HEAP(socArray, size);
+    BUILD_MAX_HEAP(socArray, size);
 
-    return 0;   // Successful runtime
+    return max;   // Successful runtime
 }
 
 // Turns an array of SOC structures into a max heap

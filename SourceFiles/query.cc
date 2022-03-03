@@ -3,6 +3,7 @@
  */
 
 #include "../HeaderFiles/query.h"
+#include "../HeaderFiles/heap.h"
 #include <cstring>
 #include <iostream>
 
@@ -15,14 +16,13 @@ query_type get_query(char inputs[NUM_INPUTS][INPUT_LENGTH]){
     // find max
     if (strcmp(inputs[0], "find") == 0 && strcmp(inputs[1], "max") == 0)
         q = max;
-
     // find ratio
     else if(strcmp(inputs[0], "find") == 0 && strcmp(inputs[1], "ratio") == 0)
         q = ratio;
-
     // Query Type Unknown
     else
         q = NA;
+
     return q;   // Successful Runtime
 }
 
@@ -46,7 +46,19 @@ void findMax(char workerType[INPUT_LENGTH], int numWorkers){
         return;
     }
 
-    // Create a binary tree from csv file
-    SOC* socArray[NUM_OCC];
-    getSOC(socArray, w);
+    // CREATE HEAP FROM SOC FILE
+
+    SOC *socArray;  // Holds first position of an SOC array
+    socArray = getSOC();
+
+    int size = 0;
+    for(int i = 0; i < NUM_OCC; i++){
+        if(socArray[i].total == NULL){
+            size = i;
+            break;
+        }
+    }
+
+    BUILD_MAX_HEAP(socArray, size);
+    DELETE_MAX(socArray, numWorkers);
 }

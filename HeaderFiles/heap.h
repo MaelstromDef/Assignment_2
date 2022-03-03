@@ -11,8 +11,8 @@
 int heap();
 
 // Heap functions of "heap.cc"
-int MAX_HEAPIFY(SOC*, int, int);
-int DELETE_MAX(SOC*, int);
-int BUILD_MAX_HEAP(SOC*, int);
+int MAX_HEAPIFY(SOC* socArray, int i, int size);
+SOC DELETE_MAX(SOC* socArray, int size);
+int BUILD_MAX_HEAP(SOC* socArray, int size);
 
 #endif
