@@ -15,6 +15,14 @@ enum worker_type{
     total = 3
 };
 
+enum SOC_detail{
+    OCC = 1,
+    CODE = 2,
+    TOTAL = 3,
+    FEMALE = 4,
+    MALE = 5
+};
+
 // resetController(int*) sets all values in an int[4] to 0.
 void resetController(int* controller);
 
