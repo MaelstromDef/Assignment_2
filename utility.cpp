@@ -1,10 +1,6 @@
-/*
- * utility.cc handles all the utility functions for the Assignment 2 CSE310 project
- */
-
 #include <iostream>
 
-#include "../HeaderFiles/utility.h"
+#include "utility.h"
 
 // Resets int array "controller" values to 0
 void resetController(int* controller){
@@ -71,7 +67,7 @@ void commaInt(int toPrint){
 /*
  * Returns socArray, which is an array of pointers to SOC elements
  */
-SOC** getSOC(SOC* socArray[NUM_OCC]){
+SOC** getSOC(){
     // INITIALIZE VARS
     char c;             // char to hold file stream's input
     int i = 0;          // holds current index of socArray

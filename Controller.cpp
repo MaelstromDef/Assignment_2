@@ -3,9 +3,9 @@
  */
 
 #include <iostream>
-#include "../HeaderFiles/defns.h"
-#include "../HeaderFiles/utility.h"
-#include "../HeaderFiles/query.h"
+#include "defns.h"
+#include "utility.h"
+#include "query.h"
 
 int main(int argc, char* argv[]){
     // SIMULATE PROGRAM

@@ -2,7 +2,7 @@
  * heap.cc handles all heap functions for the Assignment 2 CSE310 project
  */
 
-#include "../HeaderFiles/heap.h"
+#include "heap.h"
 #include <iostream>
 
 int heap(){

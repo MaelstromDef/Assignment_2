@@ -1,9 +1,9 @@
 # Compiler
-CC=gcc
+CC=g++
 
 # File Directories
-CODEDIRS=.	SourceFiles
-HEADDIRS=.	HeaderFiles
+CODEDIRS=.
+HEADDIRS=.
 
 OPT=-O0
 DEPFLAGS=-MP -MD
@@ -12,11 +12,11 @@ DEPFLAGS=-MP -MD
 CFLAGS=-Wall -Wextra -g $(foreach D,$(HEADDIRS), -I$(D)) $(OPT) $(DEPFLAGS)
 
 # FILES AND OBJECTS
-CFILES=$(foreach C, $(CODEDIRS), $(wildcard $(C)/*.cc))
+CFILES=$(foreach C, $(CODEDIRS), $(wildcard $(C)/*.cpp))
 HFILES=$(foreach H, $(HEADDIRS), $(wildcard $(H)/*.h))
 
-OBJECTS=$(patsubst %.c, %.o,$(CFILES))
-DEPFILES=$(patsubst %.c, %.d, $(CFILES))
+OBJECTS=$(patsubst %.cpp,%.o,$(CFILES))
+DEPFILES=$(patsubst %.cpp,%.d, $(CFILES))
 
 # Name of the binary executable
 BINARY=earnings

@@ -1,3 +1,6 @@
+#ifndef DEFNS_H
+#define DEFNS_H
+
 // File defns.h for Project #2, Spring 2022
 
 #define	OCC_LEN	125
@@ -52,3 +55,5 @@ struct bst{
     struct bst *left; // A pointer to the left child
     struct bst *right; // A pointer to the right child
 };
+
+#endif

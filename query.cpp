@@ -1,9 +1,8 @@
-/*
- * query.cc is a c++ file that handles the query functions called in Controller.cc
- */
 
-#include "../HeaderFiles/query.h"
-#include "../HeaderFiles/heap.h"
+// Hello
+
+#include "query.h"
+#include "heap.h"
 #include <cstring>
 #include <iostream>
 
@@ -70,7 +69,7 @@ void findMax(char workerType[INPUT_LENGTH], int numWorkers){
     // PRINT N MAX FROM HEAP
     for(int i = 0; i < numWorkers; i++) {
         SOC *printMe = DELETE_MAX(socArray, size);
-        std::cout << "\t" << printMe.occupation << ": ";
+        std::cout << "\t" << printMe->occupation << ": ";
 
         switch(w){
             case male:
