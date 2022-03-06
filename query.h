@@ -6,10 +6,10 @@
 // Different types of queries that can be entered
 enum query_type{
     NA = -1,        // NA is an undefined query_type. If get_query() returns NA, the query inputted was unrecognized.
-    max = 1,
-    ratio = 2,
-    find_occ = 3,
-    range_occ = 4
+    MAX = 1,
+    RATIO = 2,
+    FIND_OCC = 3,
+    RANGE_OCC = 4
 };
 
 // Gets the query type entered into some 2d array of strings.

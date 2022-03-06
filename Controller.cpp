@@ -26,12 +26,12 @@ int main(int argc, char* argv[]){
 
             // Perform query
             switch(q){
-                case max: {     // find max
+                case MAX: {     // find max
                     int n = intFromString(inputs[3]);
                     findMax(inputs[2], n);
                     break;
                 }
-                case ratio: {   // find ratio
+                case RATIO: {   // find ratio
                     int startYear = intFromString(inputs[2]);
                     int endYear = intFromString(inputs[3]);
                     findRatio(startYear, endYear);

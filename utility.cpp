@@ -67,7 +67,7 @@ void commaInt(int toPrint){
 /*
  * Returns socArray, which is an array of pointers to SOC elements
  */
-SOC** getSOC(){
+SOC* getSOC(){
     // INITIALIZE VARS
     char c;                 // char to hold file stream's input
     char buffer[OCC_LEN];   // Holds string-type inputs
@@ -75,8 +75,8 @@ SOC** getSOC(){
     int i = 0;              // holds current index of socArray
     SOC_detail detail = OCC;    // holds number of characters read from the current line
 
-    SOC* socArray[NUM_OCC];
-    socArray[i] = (SOC*) malloc (sizeof(SOC));  // Initialize socArray
+    SOC *socArray;
+    socArray = (SOC*) malloc (sizeof(SOC) * OCC_LEN);  // Initialize socArray
 
     // Open csv file containing relevant info
     std::ifstream socFile;
@@ -95,7 +95,6 @@ SOC** getSOC(){
         if(c == '\n'){  // Next element
             i++;
             detail = OCC;
-            socArray[i] = (SOC*) malloc (sizeof(SOC));  // Allocate next SOC element
             socFile.get(c);     // Get next usable
 
         }else if(c == ','){     // Next data type
@@ -110,7 +109,7 @@ SOC** getSOC(){
                 case OCC:
                     // Copy buffer to socArray value
                     while(buffer[buffer_index] != '\0' && buffer_index < OCC_LEN){
-                        socArray[i]->occupation[buffer_index] = buffer[buffer_index];
+                        socArray[i].occupation[buffer_index] = buffer[buffer_index];
                         buffer_index++;
                     }
                     buffer_index = 0;
@@ -118,19 +117,19 @@ SOC** getSOC(){
                 case CODE:
                     // Copy buffer to socArray value
                     while(buffer[buffer_index] != '\0' && buffer_index < OCC_LEN){
-                        socArray[i]->SOC_code[buffer_index] = buffer[buffer_index];
+                        socArray[i].SOC_code[buffer_index] = buffer[buffer_index];
                         buffer_index++;
                     }
                     buffer_index = 0;
                     break;
                 case TOTAL:
-                    socArray[i]->total = intFromString(buffer);
+                    socArray[i].total = intFromString(buffer);
                     break;
                 case FEMALE:
-                    socArray[i]->female = intFromString(buffer);
+                    socArray[i].female = intFromString(buffer);
                     break;
                 case MALE:
-                    socArray[i]->male = intFromString(buffer);
+                    socArray[i].male = intFromString(buffer);
                     break;
             }
 
@@ -143,6 +142,10 @@ SOC** getSOC(){
         buffer[buffer_index] = c;
         buffer_index++;
     }
+
+    // Indicate an empty node if all nodes weren't used
+    if(buffer_index < OCC_LEN)
+        socArray[buffer_index].total = 0;
 
     socFile.close();
 

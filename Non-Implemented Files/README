@@ -18,15 +18,12 @@ Currently, the included files are:
 
 TO-DO:
 
-    Finish find_max query and implement the find_ratio query.
-    find_max: created heap SOC array.
-        Need to ensure that getSOC will work properly,
-        and finish implementation of removing and displaying the max using the altered DELETE_MAX function from heap.h
-    find_ratio: not started.
+    Test and debug code. Keep up the good work, almost done with the MILESTONE!!!
 
-FINISHED FROM TO-DO:
+Finished Implementations:
 
-    Finished displaying/removing max.
+    find_max:   finished (bar testing)
+    find_ratio: finished (bar testing)
 
 DATE CREATED:   February 26/2022
 AUTHOR:         Aaron Huggins.
