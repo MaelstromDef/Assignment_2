@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #include "utility.h"
 
@@ -14,26 +15,28 @@ int intFromString(char* input){
     int num = 0;
 
     for(int i = 0; input[i] != '\0'; i++){
-        if((input[i] >= '0') && (input[i] <= '9')) {
+        if((((unsigned char)input[i]) >= '0') && (((unsigned char)input[i]) <= '9')) {
             num *= 10;
-            num += input[i] - 48;
+            num += (int)((unsigned char)input[i]) - 48;
         }
     }
+
+    return num;
 }
 
 // Prints out comma version of an int
 void commaInt(int toPrint){
     int log = 0;
-    int holder = 1;
+    int logDivider = 1;
 
     // Find log of toPrint
-    while(toPrint / holder > 0){
+    while(toPrint / logDivider > 0){
         log++;
-        holder *= 10;
+        logDivider *= 10;
     }
 
     // Set log and holder back to a point where toPrint / holder > 0 (single digit)
-    holder /= 10;
+    logDivider /= 10;
     log--;
 
     /*
@@ -42,24 +45,32 @@ void commaInt(int toPrint){
      *  This is because the first section can be 1, 2, or 3 digits long before the next comma comes.
      */
 
-    // Print first section of the int
-    for(int i = log; i % 3 != 0; i--){
-        std::cout << toPrint / holder;
-        toPrint -= (toPrint / holder) * holder;         // Subtract toPrint by its largest digit
-        holder /= 10;
-        log--;
+    // Print first section of the int, as long as the number is not of standard form
+    if(log % 3 != 2) {
+        for (int i = log; i % 3 != 2 && i >= 0; i--) {
+            std::cout << toPrint / logDivider;
+            toPrint -= (toPrint / logDivider) * logDivider;         // Subtract toPrint by its largest digit
+            logDivider /= 10;                                       // Take away 1 digit from logDivider
+        }
+
+        // Print comma if the number is more than 3 digits, otherwise whole number has been printed.
+        if(log > 2)
+            std::cout << ",";
+        else
+            return;
     }
 
     // Print rest of the int
-    while(log > 0){
-        if(log % 3 == 0)
+    while(log >= 0){
+        std::cout << toPrint / logDivider;
+        toPrint -= (toPrint / logDivider) * logDivider;         // Subtract toPrint by its largest digit
+
+        logDivider /= 10;   // Take a digit away from logDivider
+        log--;              // Increment log downwards
+
+        // Print comma before 1st of next 3 digits
+        if(log % 3 == 2)
             std::cout << ",";
-
-        std::cout << toPrint / holder;
-        toPrint -= (toPrint / holder) * holder;         // Subtract toPrint by its largest digit
-
-        holder /= 10;
-        log--;
     }
 }
 
@@ -67,85 +78,119 @@ void commaInt(int toPrint){
 /*
  * Returns socArray, which is an array of pointers to SOC elements
  */
-SOC* getSOC(){
-    // INITIALIZE VARS
-    char c;                 // char to hold file stream's input
-    char buffer[OCC_LEN];   // Holds string-type inputs
-    int buffer_index = 0;
-    int i = 0;              // holds current index of socArray
-    SOC_detail detail = OCC;    // holds number of characters read from the current line
+SOC* getSOC(int YYYY){
+    // Create an array of SOC elements using heap allocation
+    SOC* socArray;
+    socArray = (SOC*) malloc (sizeof(SOC) * NUM_OCC);
 
-    SOC *socArray;
-    socArray = (SOC*) malloc (sizeof(SOC) * OCC_LEN);  // Initialize socArray
+    char buffer[OCC_LEN];   // Holds input until ready to use
+    char c;                 // Holds immediate character
 
-    // Open csv file containing relevant info
-    std::ifstream socFile;
-    socFile.open(SOC_FILE);
+    // Indexes for socArray and buffer respectively
+    int socI = 0;
+    int bufI = 0;
 
-    // PARSE ARRAY
+    // Create a variable to keep track of current SOC element
+    SOC_detail detail = OCC;
 
-    // Overlook 5 lines
-    for(i = 0; i < 5; i++)
-        while(socFile.get(c) && c != '\n');
+    // OPEN SOC FILE
 
-    // Get SOC elements
-    while(socFile.get(c)){
-
-        // Look for data separators
-        if(c == '\n'){  // Next element
-            i++;
-            detail = OCC;
-            socFile.get(c);     // Get next usable
-
-        }else if(c == ','){     // Next data type
-
-            // Update buffer values
-            if(buffer_index < OCC_LEN)
-                buffer[buffer_index] = '\0';
-            buffer_index = 0;
-
-            // Update current data type of socArray[i]
-            switch(detail){
-                case OCC:
-                    // Copy buffer to socArray value
-                    while(buffer[buffer_index] != '\0' && buffer_index < OCC_LEN){
-                        socArray[i].occupation[buffer_index] = buffer[buffer_index];
-                        buffer_index++;
-                    }
-                    buffer_index = 0;
-                    break;
-                case CODE:
-                    // Copy buffer to socArray value
-                    while(buffer[buffer_index] != '\0' && buffer_index < OCC_LEN){
-                        socArray[i].SOC_code[buffer_index] = buffer[buffer_index];
-                        buffer_index++;
-                    }
-                    buffer_index = 0;
-                    break;
-                case TOTAL:
-                    socArray[i].total = intFromString(buffer);
-                    break;
-                case FEMALE:
-                    socArray[i].female = intFromString(buffer);
-                    break;
-                case MALE:
-                    socArray[i].male = intFromString(buffer);
-                    break;
-            }
-
-            // Go to next data type
-            detail = (SOC_detail)((int)detail +  1);         // Change SOC_detail to next type
-            socFile.get(c);     // Get next usable
-        }
-
-        // Increment buffer values
-        buffer[buffer_index] = c;
-        buffer_index++;
+    // Add appropriate ending to soc file name
+    strcpy(buffer, SOC_FILE);
+    bufI = 1000;
+    for(int i = 0; i < 4; i++){
+        buffer[20+i] = (YYYY / bufI)+48;
+        YYYY -= (YYYY / bufI) * bufI;
+        bufI /= 10;
     }
 
-    // Indicate an empty node if all nodes weren't used
-    if(buffer_index < OCC_LEN)
-        socArray[buffer_index].total = 0;
+    // Add .csv extension to file name
+    buffer[24] = '.';
+    buffer[25] = 'c';
+    buffer[26] = 's';
+    buffer[27] = 'v';
+    buffer[28] = '\0';
+
+    bufI = 0;   // reset bufI to 0 after unrelated usage
+
+    std::ifstream socFile;
+    socFile.open(buffer);
+    if(socFile.is_open()){
+
+        // Skip unnecessary lines
+        for(int i = 0; i < 5; i++)
+            while(socFile.get(c) && c != '\n');
+
+        // Get necessary lines
+        while(socFile.get(c)){
+
+            // INDICATES OUT OF BOUNDS
+            if(socI >= NUM_OCC){
+                std::cout << "ERROR: SOC OUT OF BOUNDS" << std::endl;
+                return NULL;
+            }
+
+            // INDICATES NEW SOC ELEMENT
+            if(c == '\n'){
+
+                // Enter last of line's information (.male)
+                buffer[bufI] = '\0';
+
+                if(strcmp(buffer, "N") == 0){
+                    socArray[socI].male = -1;
+                }else
+                    socArray[socI].male = intFromString(buffer);
+
+                // Update parsing values
+                socI++;
+                bufI = 0;
+                detail = OCC;
+                socFile.get(c); // Gets rid of trailing character
+
+                continue; // Next iteration
+            }
+            // INDICATES NEW SOC DETAIL
+            if(c == ','){
+
+                // Enter detail information
+                buffer[bufI] = '\0';
+
+                switch(detail){
+                    case OCC:
+                        strcpy(socArray[socI].occupation, buffer);
+                        break;
+                    case CODE:
+                        strcpy(socArray[socI].SOC_code, buffer);
+                        break;
+                    case TOTAL:
+                        if(strcmp(buffer, "N") == 0){
+                            socArray[socI].total = -1;
+                        }else
+                            socArray[socI].total = intFromString(buffer);
+                        break;
+                    case FEMALE:
+                        if(strcmp(buffer, "N") == 0){
+                            socArray[socI].female = -1;
+                        }else
+                            socArray[socI].female = intFromString(buffer);
+                        break;
+                }
+
+                // Update parsing values
+                bufI = 0;
+                detail = (SOC_detail)((int)detail + 1);
+
+                continue; // Next iteration
+
+            }
+
+            // Add to buffer
+            buffer[bufI] = c;
+            bufI++;
+        }
+
+    }else
+        return NULL;
 
     socFile.close();
 

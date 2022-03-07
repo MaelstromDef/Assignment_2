@@ -31,7 +31,8 @@ query_type get_query(char inputs[NUM_INPUTS][INPUT_LENGTH]){
  * workerType is a string that holds "male", "female", or "total", which represents the types of workers being looked at
  * numWorkers is an int that represents the amount of workers to be displayed.
  */
-void findMax(char workerType[INPUT_LENGTH], int numWorkers){
+void findMax(char workerType[INPUT_LENGTH], int numWorkers, int YYYY){
+
     // Get type of worker to find
     worker_type w;
     if(strcmp(workerType, "male") == 0)
@@ -48,47 +49,45 @@ void findMax(char workerType[INPUT_LENGTH], int numWorkers){
     // CREATE HEAP FROM SOC FILE
 
     SOC *socArray;  // Holds an SOC array (memory allocated)
-    socArray = getSOC();
+    socArray = getSOC(YYYY);
 
-    // Get size of the array
-    int size = -1;
-    for(int i = 0; i < NUM_OCC; i++){
-        if(socArray[i].total == -1){
-            size = i;
-            break;
+    if(socArray != NULL) {
+        std::cout << "Query: find max " << workerType << " " << numWorkers << "\n" << std::endl;
+        std::cout << "Top " << numWorkers << " occupations in " << YYYY << " for " << workerType << " workers:" << std::endl;
+
+        // Turn socArray into a max heap
+        BUILD_MAX_HEAP(socArray, w, NUM_OCC);
+
+        // PRINT N MAX FROM HEAP
+
+        for (int i = 0; i < numWorkers; i++) {
+            SOC printMe = DELETE_MAX(socArray, w, NUM_OCC);
+
+            std::cout << "\t" << printMe.occupation << ": ";
+
+            switch (w) {
+                case male:
+                    commaInt(printMe.male);
+                    std::cout << std::endl;
+                    break;
+                case female:
+                    commaInt(printMe.female);
+                    std::cout << std::endl;
+                    break;
+                case total:
+                    commaInt(printMe.total);
+                    std::cout << std::endl;
+                    break;
+            }
         }
+
+        // DELETE HEAP
+        free(socArray);
+    }else{
+        std::cout << "Query failed." << std::endl;
     }
 
-    // Entire socArray was used
-    if(size == -1)
-        size = NUM_OCC - 1;
-
-    // Turn socArray into a max heap
-    BUILD_MAX_HEAP(socArray,size);
-
-    // PRINT N MAX FROM HEAP
-    for(int i = 0; i < numWorkers; i++) {
-        SOC printMe = DELETE_MAX(socArray, size);
-        std::cout << "\t" << printMe.occupation << ": ";
-
-        switch(w){
-            case male:
-                commaInt(printMe.male);
-                std::cout << std::endl;
-                break;
-            case female:
-                commaInt(printMe.female);
-                std::cout << std::endl;
-                break;
-            case total:
-                commaInt(printMe.total);
-                std::cout << std::endl;
-                break;
-        }
-    }
-
-    // DELETE HEAP
-    free(socArray);
+    std::cout << std::endl;
 }
 
 void findRatio(int YYYY, int ZZZZ){
@@ -103,20 +102,24 @@ void findRatio(int YYYY, int ZZZZ){
     std::ifstream earningsFile;
     earningsFile.open(EARNINGS_FILE);
 
+    if(!(earningsFile.is_open())){
+        std::cout << "ERROR: EARNINGS FILE NOT OPENED" << std::endl;
+    }
+
     for(int i = 0; i < 8; i++){
         // Ignore line
         while(earningsFile.get(c) && c != '\n');
     }
 
     // Create and fill earnings array
-    earnings EArray[60];        // array of earnings structures with a max size = the amount of years possible in earnings file
+    earnings EArray[70];        // array of earnings structures with a max size = the amount of years possible in earnings file
     int EI = 0;                 // index for EArray
     char buffer[20];            // Holds current piece of the earnings line
     int BI = 0;                 // index for buffer
     earnings_detail e = year;   // Keeps track of what detail is being looked at
 
     while(earningsFile.get(c)){
-        if(EI >= 60){
+        if(EI >= 70){
             std::cout << "ERROR: TOO MANY EARNINGS ELEMENTS" << std::endl;
             return;
         }

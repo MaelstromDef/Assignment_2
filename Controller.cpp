@@ -20,6 +20,8 @@ int main(int argc, char* argv[]){
     while(std::cin.get(c)){
         // PERFORM QUERY ON NEW LINE
         if(c == '\n') {
+            // Ensure break point
+            inputs[3][controller[3]] = '\0';
 
             // Get Query Type
             query_type q = get_query(inputs);
@@ -27,18 +29,24 @@ int main(int argc, char* argv[]){
             // Perform query
             switch(q){
                 case MAX: {     // find max
-                    int n = intFromString(inputs[3]);
-                    findMax(inputs[2], n);
+                    int workers = intFromString(inputs[3]);
+                    findMax(inputs[2], workers, intFromString(argv[1]));
+                    // Force new input
+                    inputs[0][1] = '\0';
+                    q = NA;
                     break;
                 }
                 case RATIO: {   // find ratio
                     int startYear = intFromString(inputs[2]);
                     int endYear = intFromString(inputs[3]);
                     findRatio(startYear, endYear);
+                    // Force new input
+                    inputs[0][1] = '\0';
+                    q = NA;
                     break;
                 }
                 default:        // Unrecognized Query
-                    std::cout << "QUERY NOT RECOGNIZED" << std::endl;
+                    std::cout << "Query failed." << std::endl;
                     break;
             }
 
