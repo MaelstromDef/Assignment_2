@@ -24,53 +24,26 @@ int intFromString(char* input){
     return num;
 }
 
-// Prints out comma version of an int
+// Prints out comma version of an int (Does not print to newline)
 void commaInt(int toPrint){
-    int log = 0;
-    int logDivider = 1;
+    int buffer[10];
+    int i = 0;
 
-    // Find log of toPrint
-    while(toPrint / logDivider > 0){
-        log++;
-        logDivider *= 10;
+    // Put the integer to print into a buffer backwards
+    while(toPrint > 0){
+        buffer[i] = toPrint % 10;
+        toPrint /= 10;
+        i++;
     }
 
-    // Set log and holder back to a point where toPrint / holder > 0 (single digit)
-    logDivider /= 10;
-    log--;
+    i--;
 
-    /*
-     * PRINTING:
-     *  Printing must be done in two parts, the first section and then the rest of the int.
-     *  This is because the first section can be 1, 2, or 3 digits long before the next comma comes.
-     */
-
-    // Print first section of the int, as long as the number is not of standard form
-    if(log % 3 != 2) {
-        for (int i = log; i % 3 != 2 && i >= 0; i--) {
-            std::cout << toPrint / logDivider;
-            toPrint -= (toPrint / logDivider) * logDivider;         // Subtract toPrint by its largest digit
-            logDivider /= 10;                                       // Take away 1 digit from logDivider
-        }
-
-        // Print comma if the number is more than 3 digits, otherwise whole number has been printed.
-        if(log > 2)
+    // Print the integer
+    while(i >= 0){
+        std::cout << buffer[i];
+        if(i % 3 == 0 && i != 0)
             std::cout << ",";
-        else
-            return;
-    }
-
-    // Print rest of the int
-    while(log >= 0){
-        std::cout << toPrint / logDivider;
-        toPrint -= (toPrint / logDivider) * logDivider;         // Subtract toPrint by its largest digit
-
-        logDivider /= 10;   // Take a digit away from logDivider
-        log--;              // Increment log downwards
-
-        // Print comma before 1st of next 3 digits
-        if(log % 3 == 2)
-            std::cout << ",";
+        i--;
     }
 }
 
@@ -89,6 +62,7 @@ SOC* getSOC(int YYYY){
     // Indexes for socArray and buffer respectively
     int socI = 0;
     int bufI = 0;
+    bool commaBlock = false;     // At 0, commaBlock does nothing. At 1, commaBlock prevents commas from being seperators
 
     // Create a variable to keep track of current SOC element
     SOC_detail detail = OCC;
@@ -130,6 +104,12 @@ SOC* getSOC(int YYYY){
                 return NULL;
             }
 
+            // swap commaBlock's value upon finding a quotation mark
+            if(c == '\"') {
+                commaBlock = !commaBlock;
+                continue;
+            }
+
             // INDICATES NEW SOC ELEMENT
             if(c == '\n'){
 
@@ -145,12 +125,12 @@ SOC* getSOC(int YYYY){
                 socI++;
                 bufI = 0;
                 detail = OCC;
-                socFile.get(c); // Gets rid of trailing character
+
 
                 continue; // Next iteration
             }
             // INDICATES NEW SOC DETAIL
-            if(c == ','){
+            if(c == ',' && !commaBlock){
 
                 // Enter detail information
                 buffer[bufI] = '\0';
@@ -165,14 +145,16 @@ SOC* getSOC(int YYYY){
                     case TOTAL:
                         if(strcmp(buffer, "N") == 0){
                             socArray[socI].total = -1;
-                        }else
+                        }else{
                             socArray[socI].total = intFromString(buffer);
+                        }
                         break;
                     case FEMALE:
                         if(strcmp(buffer, "N") == 0){
                             socArray[socI].female = -1;
-                        }else
+                        }else {
                             socArray[socI].female = intFromString(buffer);
+                        }
                         break;
                 }
 

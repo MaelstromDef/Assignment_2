@@ -48,7 +48,7 @@ void findMax(char workerType[INPUT_LENGTH], int numWorkers, int YYYY){
 
     // CREATE HEAP FROM SOC FILE
 
-    SOC *socArray;  // Holds an SOC array (memory allocated)
+    SOC *socArray;  // Holds a SOC array (memory allocated)
     socArray = getSOC(YYYY);
 
     if(socArray != NULL) {
@@ -61,7 +61,7 @@ void findMax(char workerType[INPUT_LENGTH], int numWorkers, int YYYY){
         // PRINT N MAX FROM HEAP
 
         for (int i = 0; i < numWorkers; i++) {
-            SOC printMe = DELETE_MAX(socArray, w, NUM_OCC);
+            SOC printMe = DELETE_MAX(socArray, w, NUM_OCC - i);
 
             std::cout << "\t" << printMe.occupation << ": ";
 
