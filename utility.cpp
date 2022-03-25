@@ -178,3 +178,104 @@ SOC* getSOC(int YYYY){
 
     return socArray;
 }
+
+earnings* getEarning(){
+    // Open earnings file and skip unnecessary lines
+    char c;
+    std::ifstream earningsFile;
+    earningsFile.open(EARNINGS_FILE);
+
+    if(!(earningsFile.is_open())){
+        std::cout << "ERROR: EARNINGS FILE NOT OPENED" << std::endl;
+    }
+
+    for(int i = 0; i < 8; i++){
+        // Ignore line
+        while(earningsFile.get(c) && c != '\n');
+    }
+
+    // CREATE EARNINGS ARRAY
+    earnings *eArray;           // array of earnings structures with a max size = the amount of years possible in earnings file
+    eArray = (earnings*)malloc(sizeof(earnings) * 70);
+
+    int EI = 0;                 // index for EArray
+    char buffer[20];            // Holds current piece of the earnings line
+    int BI = 0;                 // index for buffer
+    earnings_detail e = year;   // Keeps track of what detail is being looked at
+    bool commaBlock = false;    // False when commas indicate a separator, true if otherwise. Blocks commas from separating information
+
+    while(earningsFile.get(c)){
+
+        // INDEXES OUT OF BOUNDS
+        if(EI >= 70){
+            std::cout << "ERROR: TOO MANY EARNINGS ELEMENTS" << std::endl;
+            free(eArray);
+            return NULL;
+        }
+        if(BI >= 20){
+            std::cout << "ERROR: BUFFER UNDERSIZED" << std::endl;
+            free(eArray);
+            return NULL;
+        }
+
+        // QUOTATIONS
+        if(c == '\"'){
+            commaBlock = !commaBlock;
+            continue;
+        }
+
+        // NEW LINE
+        if(c == '\n'){
+            buffer[BI] = '\0';      // Ensure break point
+            eArray[EI].female_earnings_moe = intFromString(buffer);
+
+            EI++;                   // Next earnings element
+            BI = 0;                 // Reset buffer
+            e = year;               // Reset detail
+            continue;
+        }
+
+        // END OF FIELD
+        if(c == ',' && !commaBlock){
+            buffer[BI] = '\0';      // Ensure break point
+
+            // Update correct field
+            switch(e){
+                case year:
+                    eArray[EI].year = intFromString(buffer);
+                    break;
+                case MT:
+                    eArray[EI].male_total = intFromString(buffer);
+                    break;
+                case MWE:
+                    eArray[EI].male_with_earnings = intFromString(buffer);
+                    break;
+                case ME:
+                    eArray[EI].male_earnings = intFromString(buffer);
+                    break;
+                case MMOE:
+                    eArray[EI].male_earnings_moe = intFromString(buffer);
+                    break;
+                case FT:
+                    eArray[EI].female_total = intFromString(buffer);
+                    break;
+                case FWE:
+                    eArray[EI].female_with_earnings = intFromString(buffer);
+                    break;
+                case FE:
+                    eArray[EI].female_earnings = intFromString(buffer);
+                    break;
+            }
+
+            e = (earnings_detail)((int) e + 1);     // Update earnings_detail looked at
+            BI = 0;                                 // Reset buffer
+            continue;
+        }
+
+        buffer[BI] = c; // Update buffer
+        BI++;           // Increment buffer index
+    }
+
+    earningsFile.close();
+    return eArray;
+}

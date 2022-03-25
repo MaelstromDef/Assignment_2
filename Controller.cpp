@@ -27,6 +27,11 @@ int main(int argc, char* argv[]){
             query_type q = get_query(inputs);
 
             // Perform query
+            std::cout << "Query: ";
+            for(int i = 0; i < 3; i++)
+                std::cout << inputs[i] << " ";
+            std::cout << inputs[3] << std::endl << std::endl;
+
             switch(q){
                 case MAX: {     // find max
                     int workers = intFromString(inputs[3]);

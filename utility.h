@@ -47,4 +47,7 @@ void commaInt(int toPrint);
 // getSOC returns the address of an SOC array that was created using malloc.
 SOC* getSOC(int YYYY);
 
+// getEarnings returns the address of an earnings array that was created using malloc
+earnings getEarnings();
+
 #endif

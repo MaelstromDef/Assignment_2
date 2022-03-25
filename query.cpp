@@ -52,7 +52,6 @@ void findMax(char workerType[INPUT_LENGTH], int numWorkers, int YYYY){
     socArray = getSOC(YYYY);
 
     if(socArray != NULL) {
-        std::cout << "Query: find max " << workerType << " " << numWorkers << "\n" << std::endl;
         std::cout << "Top " << numWorkers << " occupations in " << YYYY << " for " << workerType << " workers:" << std::endl;
 
         // Turn socArray into a max heap
@@ -97,88 +96,7 @@ void findRatio(int YYYY, int ZZZZ){
         return;
     }
 
-    // Open earnings file and skip unnecessary lines
-    char c;
-    std::ifstream earningsFile;
-    earningsFile.open(EARNINGS_FILE);
 
-    if(!(earningsFile.is_open())){
-        std::cout << "ERROR: EARNINGS FILE NOT OPENED" << std::endl;
-    }
-
-    for(int i = 0; i < 8; i++){
-        // Ignore line
-        while(earningsFile.get(c) && c != '\n');
-    }
-
-    // Create and fill earnings array
-    earnings EArray[70];        // array of earnings structures with a max size = the amount of years possible in earnings file
-    int EI = 0;                 // index for EArray
-    char buffer[20];            // Holds current piece of the earnings line
-    int BI = 0;                 // index for buffer
-    earnings_detail e = year;   // Keeps track of what detail is being looked at
-
-    while(earningsFile.get(c)){
-        if(EI >= 70){
-            std::cout << "ERROR: TOO MANY EARNINGS ELEMENTS" << std::endl;
-            return;
-        }
-        if(BI >= 20){
-            std::cout << "ERROR: BUFFER UNDERSIZED" << std::endl;
-            return;
-        }
-
-        // NEW LINE
-        if(c == '\n'){
-            buffer[BI] = '\0';      // Ensure break point
-            EArray[EI].female_earnings_moe = intFromString(buffer);
-
-            EI++;                   // Next earnings element
-            BI = 0;                 // Reset buffer
-            e = year;               // Reset detail
-            earningsFile.get(c);    // Automatically go to next character
-        }
-
-        // END OF FIELD
-        if(c == ','){
-            buffer[BI] = '\0';      // Ensure break point
-
-            // Update correct field
-            switch(e){
-                case year:
-                    EArray[EI].year = intFromString(buffer);
-                    break;
-                case MT:
-                    EArray[EI].male_total = intFromString(buffer);
-                    break;
-                case MWE:
-                    EArray[EI].male_with_earnings = intFromString(buffer);
-                    break;
-                case ME:
-                    EArray[EI].male_earnings = intFromString(buffer);
-                    break;
-                case MMOE:
-                    EArray[EI].male_earnings_moe = intFromString(buffer);
-                    break;
-                case FT:
-                    EArray[EI].female_total = intFromString(buffer);
-                    break;
-                case FWE:
-                    EArray[EI].female_with_earnings = intFromString(buffer);
-                    break;
-                case FE:
-                    EArray[EI].female_earnings = intFromString(buffer);
-                    break;
-            }
-
-            e = (earnings_detail)((int) e + 1);     // Update earnings_detail looked at
-            BI = 0;                                 // Reset buffer
-            earningsFile.get(c);                    // Automatically go to next character
-        }
-
-        buffer[BI] = c; // Update buffer
-        BI++;           // Increment buffer index
-    }
 
     // PRINT RESULTS
     std::cout << "The female-to-male earnings ratio for 2018-2019:\n";
