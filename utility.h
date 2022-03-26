@@ -8,7 +8,7 @@
 #define NUM_INPUTS 4    // Max amount of inputs
 #define INPUT_LENGTH 12    // Max length of inputs
 #define SOC_FILE "Occupation-Dist-All-"   // File that contains SOC information
-#define EARNINGS_FILE "Earnings-1960-2019.csv"    // File that contains yearly earnings information
+#define EARNINGS_FILE "Earnings-1960-2019.csv"         // File that contains yearly earnings information
 
 enum worker_type{
     male = 1,
@@ -48,6 +48,6 @@ void commaInt(int toPrint);
 SOC* getSOC(int YYYY);
 
 // getEarnings returns the address of an earnings array that was created using malloc
-earnings getEarnings();
+earnings* getEarnings(int YYYY, int ZZZZ);
 
 #endif

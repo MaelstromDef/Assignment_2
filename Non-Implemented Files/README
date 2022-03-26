@@ -6,24 +6,32 @@ Bureau and use it to perform some functions.
 
 Currently, the included files are:
 
-    Controller.cc
-    heap.cc
-    utility.cc
-    query.cc
+    Controller.cpp
+    heap.cpp
+    hash.cpp
+    bst.cpp
+    utility.cpp
+    query.cpp
 
     heap.h
+    hash.h
+    bst.h
     utility.h
     query.h
     defns.h
 
 TO-DO:
 
-    Test and debug code. Keep up the good work, almost done with the MILESTONE!!!
+    Implement creation method for the hash table.
+    Implement final 2 query methods.
+    Fill out experimentation.
 
-Finished Implementations:
+Implementation Progress:
 
-    find_max:   finished (bar testing)
-    find_ratio: finished (bar testing)
+    find_max:   finished
+    find_ratio: finished
+    find_occupation: not started
+    range_occupation: not started
 
 DATE CREATED:   February 26/2022
 AUTHOR:         Aaron Huggins.

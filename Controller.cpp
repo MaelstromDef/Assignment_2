@@ -6,8 +6,17 @@
 #include "defns.h"
 #include "utility.h"
 #include "query.h"
+#include "bst.h"
+#include "hash.h"
 
 int main(int argc, char* argv[]){
+    // NECESSARY ELEMENTS
+    bst *binTree;                           // Holds a binary search tree
+    hash_table_entry** HashTable;           // Holds an array of hash_table_entry pointers.
+
+    HashTable = (hash_table_entry**)malloc(sizeof(hash_table_entry*) * m);
+    binTree = createBST(argv[1], HashTable);
+
     // SIMULATE PROGRAM
 
     char inputs[NUM_INPUTS][INPUT_LENGTH];  // Holds input values
@@ -50,6 +59,12 @@ int main(int argc, char* argv[]){
                     q = NA;
                     break;
                 }
+                case FIND_OCC:{ // Find Occupation
+
+                }
+                case RANGE_OCC:{    // Rage Occupation
+
+                }
                 default:        // Unrecognized Query
                     std::cout << "Query failed." << std::endl;
                     break;
@@ -88,4 +103,6 @@ int main(int argc, char* argv[]){
             }
         }
     }
+
+    deleteBST(binTree, HashTable);
 }

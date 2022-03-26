@@ -17,8 +17,8 @@ query_type get_query(char[NUM_INPUTS][INPUT_LENGTH]);
 
 // The following 4 functions will perform the queries that can be entered into the program
 void findMax(char workerType[INPUT_LENGTH], int numWorkers, int YYYY);
-void findRatio(int, int);
-void findOccupation();
+int findRatio(int, int);
+void findOccupation(int socCode);
 void rangeOccupation();
 
 #endif

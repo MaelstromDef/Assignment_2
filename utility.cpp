@@ -179,30 +179,33 @@ SOC* getSOC(int YYYY){
     return socArray;
 }
 
-earnings* getEarning(){
-    // Open earnings file and skip unnecessary lines
-    char c;
-    std::ifstream earningsFile;
-    earningsFile.open(EARNINGS_FILE);
-
-    if(!(earningsFile.is_open())){
-        std::cout << "ERROR: EARNINGS FILE NOT OPENED" << std::endl;
-    }
-
-    for(int i = 0; i < 8; i++){
-        // Ignore line
-        while(earningsFile.get(c) && c != '\n');
-    }
-
+earnings* getEarnings(int YYYY, int ZZZZ){
     // CREATE EARNINGS ARRAY
     earnings *eArray;           // array of earnings structures with a max size = the amount of years possible in earnings file
     eArray = (earnings*)malloc(sizeof(earnings) * 70);
 
+    char c;
     int EI = 0;                 // index for EArray
-    char buffer[20];            // Holds current piece of the earnings line
+    char buffer[22];            // Holds current piece of the earnings line
     int BI = 0;                 // index for buffer
     earnings_detail e = year;   // Keeps track of what detail is being looked at
     bool commaBlock = false;    // False when commas indicate a separator, true if otherwise. Blocks commas from separating information
+
+    // Open File
+    std::ifstream earningsFile;
+    earningsFile.open(EARNINGS_FILE);
+
+    if(!(earningsFile.is_open())){
+        std::cout << "ERROR: " << buffer << " NOT OPENED" << std::endl;
+        free(eArray);
+        return NULL;
+    }
+
+    // Skip Unnecessary lines
+    for(int i = 0; i < 8; i++){
+        // Ignore line
+        while(earningsFile.get(c) && c != '\n');
+    }
 
     while(earningsFile.get(c)){
 

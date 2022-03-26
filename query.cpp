@@ -89,32 +89,39 @@ void findMax(char workerType[INPUT_LENGTH], int numWorkers, int YYYY){
     std::cout << std::endl;
 }
 
-void findRatio(int YYYY, int ZZZZ){
+int findRatio(int YYYY, int ZZZZ){
     // Check proper dating
     if(ZZZZ < YYYY) {
         std::cout << "ERROR: YEARS IN WRONG ORDER." << std::endl;
-        return;
+        return -1;
     }
 
-
+    earnings* EArray = getEarnings(YYYY,ZZZZ);   // Get array of earnings from earnings file
+    if(EArray == NULL)
+        return -1;
 
     // PRINT RESULTS
-    std::cout << "The female-to-male earnings ratio for 2018-2019:\n";
+    std::cout << "The female-to-male earnings ratio for " << YYYY << "-" << ZZZZ << ":\n";
 
-    EI = 2019 - YYYY;   // Gets index of last piece
+    // Update precision (keep old precision saved)
+    int stdPrec = std::cout.precision();
+    std::cout.setf(std::ios::fixed);
+    std::cout.precision(1);
 
-    // Print loop using EI as index
-    while(EI <= 2019 - ZZZZ){
-        // Get ratio
-        float ratio = EArray[EI].female_earnings_moe / EArray[EI].male_earnings;
-        int stdPrec = std::cout.precision();
-        std::cout.precision(3);
-
-        // Print ratio
-        std::cout << "\t" << (2019 - EI) << ": " << ratio << "%" << std::endl;
-
-        // Modify vars
-        std::cout.precision(stdPrec);       // Restore cout precision
-        EI++;       // Increment earnings array index
+    // Get the ratio for each necessary year and print it out
+    for(int i = 0; i <= (ZZZZ - YYYY); i++){
+        double ratio = (double)(EArray[2019 - YYYY + i].female_earnings) / (double)(EArray[2019 - YYYY + i].male_earnings) * 100;
+        std::cout << "\t" << (YYYY + i) << ": " << ratio << "%" << std::endl;
     }
+
+    // Reset memory and values
+    std::cout.precision(stdPrec);       // Restore cout precision
+    std::cout.unsetf(std::ios::fixed);  // Restore formatting
+    free(EArray);
+
+    return 0;
+}
+
+void findOcc(int socCode){
+
 }
