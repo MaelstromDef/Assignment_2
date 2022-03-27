@@ -7,6 +7,8 @@
 #include "hash.h"
 #include <cstring>
 
+// Creates a leaf node for the bst being created in createBST. This leaf is created at the end
+// of a chain, the path of which is determined lexicographically
 bst* createLeaf(bst* node, SOC soc){
     // Put into a right node
     if(strcmp(node->soc.occupation, soc.occupation) < 0){
@@ -38,6 +40,8 @@ bst* createLeaf(bst* node, SOC soc){
     }
 }
 
+// Creates a bst given some Occupation-Dist-All-YYYY.csv file by parsing the socs given in the
+// file and creating a bst node for each of them
 bst* createBST(char* YYYY, hash_table_entry** HashTable){
     // Get an array of soc elements
     SOC* socArr = getSOC(intFromString(YYYY));
@@ -48,14 +52,30 @@ bst* createBST(char* YYYY, hash_table_entry** HashTable){
 
     // Copy first node into tree
     root->soc = socArr[0];
-    createHashEntry(root);
+    root->left = NULL;
+    root->right = NULL;
+    createHashEntry(root, HashTable);
 
     // Create a bst node for each soc in the socArr
     for(int i = 0; i < NUM_OCC; i++){
         bst *temp = createLeaf(root, socArr[i]);
-        createHashEntry(temp);
+        createHashEntry(temp, HashTable);
     }
 
     free(socArr);
     return root;
+}
+
+// Recursively Deletes a bst from the children to the root
+void deleteBST(bst* node, hash_table_entry** HashTable){
+    // Delete Children
+    if(node->left != NULL)
+        deleteBST(node->left, HashTable);
+    if(node->right != NULL)
+        deleteBST(node->right, HashTable);
+
+    // Delete associated hash entries
+    deleteHashEntry(node, HashTable);
+    // Delete current node
+    free(node);
 }

@@ -47,6 +47,20 @@ void commaInt(int toPrint){
     }
 }
 
+// Prints out the information in a SOC element
+void printSoc(SOC toPrint){
+    std::cout << "\t";
+    std::cout << toPrint.occupation << ": YRFT: ";
+    commaInt(toPrint.total);
+
+    std::cout << ", Female: ";
+    commaInt(toPrint.female);
+
+    std::cout << ", Male: ";
+    commaInt(toPrint.male);
+    std::cout << std::endl;
+}
+
 // Gets an array of heap-allocated SOC elements from the SOC_FILE
 /*
  * Returns socArray, which is an array of pointers to SOC elements

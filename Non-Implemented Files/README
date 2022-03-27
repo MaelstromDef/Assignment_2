@@ -22,16 +22,14 @@ Currently, the included files are:
 
 TO-DO:
 
-    Implement creation method for the hash table.
-    Implement final 2 query methods.
-    Fill out experimentation.
+    Maintain code and bug fix if necessary.
 
 Implementation Progress:
 
     find_max:   finished
     find_ratio: finished
-    find_occupation: not started
-    range_occupation: not started
+    find_occupation: finished
+    range_occupation: finished
 
 DATE CREATED:   February 26/2022
 AUTHOR:         Aaron Huggins.

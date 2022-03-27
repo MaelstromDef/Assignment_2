@@ -44,6 +44,9 @@ int intFromString(char* input);
 // commaInt(int) prints out an int that is comma seperated (such as 1999 -> 1,999)
 void commaInt(int toPrint);
 
+// Prints out the information in a SOC object
+void printSoc(SOC toPrint);
+
 // getSOC returns the address of an SOC array that was created using malloc.
 SOC* getSOC(int YYYY);
 

@@ -24,12 +24,19 @@ int main(int argc, char* argv[]){
 
     // Controller variable - Holds the index of the current query input or -1 if query input is finished.
     int controller[4];
+    int result = -1;
     resetController(controller);
 
     while(std::cin.get(c)){
+        // Skip '"'
+        if(c == '\"')
+            continue;
+
         // PERFORM QUERY ON NEW LINE
         if(c == '\n') {
-            // Ensure break point
+            // Ensure break points
+            inputs[1][controller[1]] = '\0';
+            inputs[2][controller[2]] = '\0';
             inputs[3][controller[3]] = '\0';
 
             // Get Query Type
@@ -37,41 +44,54 @@ int main(int argc, char* argv[]){
 
             // Perform query
             std::cout << "Query: ";
-            for(int i = 0; i < 3; i++)
-                std::cout << inputs[i] << " ";
-            std::cout << inputs[3] << std::endl << std::endl;
+            for(int i = 0; i <= 3; i++) {
+                std::cout << inputs[i];
+                if(i < 3)
+                    std::cout << " ";
+            }
+            std::cout << std::endl << std::endl;
 
             switch(q){
                 case MAX: {     // find max
                     int workers = intFromString(inputs[3]);
-                    findMax(inputs[2], workers, intFromString(argv[1]));
-                    // Force new input
-                    inputs[0][1] = '\0';
-                    q = NA;
+                    result = findMax(inputs[2], workers, intFromString(argv[1]));
                     break;
                 }
                 case RATIO: {   // find ratio
                     int startYear = intFromString(inputs[2]);
                     int endYear = intFromString(inputs[3]);
-                    findRatio(startYear, endYear);
-                    // Force new input
-                    inputs[0][1] = '\0';
-                    q = NA;
+                    result = findRatio(startYear, endYear);
                     break;
                 }
                 case FIND_OCC:{ // Find Occupation
-
+                    int SocCode = intFromString(inputs[2]);
+                    result = findOcc(SocCode, HashTable);
+                    break;
                 }
                 case RANGE_OCC:{    // Rage Occupation
-
+                    result = rangeOcc(inputs[2], inputs[3], -3, binTree);
+                    break;
                 }
                 default:        // Unrecognized Query
-                    std::cout << "Query failed." << std::endl;
+                    result = -1;
                     break;
             }
 
+            // Force new input
+            inputs[0][1] = '\0';
+            q = NA;
+
+             if(result == -2)
+                 std::cout << "Occupation with SOC code " << inputs[2] << " not found." << std::endl;
+
+            if(result < 0)
+                std::cout << "Query failed." << std::endl << std::endl;
+            else
+                std::cout << std::endl;
+
             // Reset the controller before moving on to next instruction
             resetController(controller);
+            result = -1;
             continue;
         }
 
@@ -82,9 +102,9 @@ int main(int argc, char* argv[]){
 
                 // Handles over sized index
                 if(controller[i] > INPUT_LENGTH){
-                    std::cout << "OVER SIZED INPUT AT: " << i << std::endl;
                     resetController(controller);
-                    return -1;
+                    while(std::cin.get(c) && c != '\n');
+                    break;
                 }
 
                 // space indicates next part of input
@@ -104,5 +124,8 @@ int main(int argc, char* argv[]){
         }
     }
 
+    // Delete every node in the bst, along with every entry in the HashTable
     deleteBST(binTree, HashTable);
+    // Delete the HashTable itself
+    free(HashTable);
 }

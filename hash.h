@@ -13,6 +13,12 @@
 int h(int k);
 
 // Creates a hash entry given some bst node
-void createHashEntry(bst* node);
+void createHashEntry(bst* node, hash_table_entry** HashTable);
+
+// Deletes a hash entry given some bst node
+void deleteHashEntry(bst* node, hash_table_entry** HashTable);
+
+// Prints hash entry information
+void printHashEntry(hash_table_entry* HashEntry);
 
 #endif //ASSIGNMENT_2_HASH_H

@@ -16,9 +16,9 @@ enum query_type{
 query_type get_query(char[NUM_INPUTS][INPUT_LENGTH]);
 
 // The following 4 functions will perform the queries that can be entered into the program
-void findMax(char workerType[INPUT_LENGTH], int numWorkers, int YYYY);
+int findMax(char workerType[INPUT_LENGTH], int numWorkers, int YYYY);
 int findRatio(int, int);
-void findOccupation(int socCode);
-void rangeOccupation();
+int findOcc(int socCode, hash_table_entry** HashTable);
+int rangeOcc(char* low, char* high, int printed, bst* root);
 
 #endif
