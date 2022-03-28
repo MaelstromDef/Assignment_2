@@ -38,6 +38,7 @@ void createHashEntry(bst* node, hash_table_entry** HashTable){
         newEntry->next = NULL;
 
         // Add newEntry to HashTable
+        // Entry is first in chain
         if(HashTable[h(soccode)] == NULL)
             HashTable[h(soccode)] = newEntry;
         else{

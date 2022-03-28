@@ -45,7 +45,11 @@ int main(int argc, char* argv[]){
             // Perform query
             std::cout << "Query: ";
             for(int i = 0; i <= 3; i++) {
+                if(q == RANGE_OCC && i >= 2)
+                    std::cout << "\"";
                 std::cout << inputs[i];
+                if(q == RANGE_OCC && i >= 2)
+                    std::cout << "\"";
                 if(i < 3)
                     std::cout << " ";
             }

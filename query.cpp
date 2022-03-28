@@ -184,7 +184,7 @@ int rangeOcc(char* low, char* high, int printed, bst* root){
     if(strcmp(low, root->soc.occupation) < 0 && strcmp(root->soc.occupation, high) < 0){
         // Print out first line of query if nothing's been printed yet
         if(printed < 0)
-            std::cout << "The occupations in the range " << low << " to " << high << ":" << std::endl;
+            std::cout << "The occupations in the range \"" << low << "\" to \"" << high << "\":" << std::endl;
 
         printed = 0;
         printSoc(root->soc);

@@ -6,15 +6,28 @@
 #include "utility.h"
 #include "hash.h"
 #include <cstring>
+#include <iostream>
+
+/*
+int numNodes = 0;
+int height =  0;
+int heightL = 0;
+int heightR = 0;
+int tempHeight = 0;
+int dir = -1;
+ */
 
 // Creates a leaf node for the bst being created in createBST. This leaf is created at the end
 // of a chain, the path of which is determined lexicographically
 bst* createLeaf(bst* node, SOC soc){
     // Put into a right node
     if(strcmp(node->soc.occupation, soc.occupation) < 0){
-        if(node->right != NULL)
+        if(node->right != NULL) {
+            //if(dir == -1)
+            //    dir == 1;
+            //tempHeight++;
             createLeaf(node->right, soc);
-        else{
+        }else{
             node->right = (bst*) malloc(sizeof(bst));
             node = node->right;
 
@@ -26,9 +39,12 @@ bst* createLeaf(bst* node, SOC soc){
     }
     // Put into a left node
     else{
-        if(node->left != NULL)
+        if(node->left != NULL) {
+            //if(dir == -1)
+            //    dir = 0;
+            //tempHeight++;
             createLeaf(node->left, soc);
-        else{
+        }else{
             node->left = (bst*) malloc(sizeof(bst));
             node = node->left;
 
@@ -50,6 +66,10 @@ bst* createBST(char* YYYY, hash_table_entry** HashTable){
     bst* root;
     root = (bst*) malloc (sizeof(bst));
 
+    //numNodes++;
+    //heightL++;
+    //heightR++;
+
     // Copy first node into tree
     root->soc = socArr[0];
     root->left = NULL;
@@ -57,10 +77,34 @@ bst* createBST(char* YYYY, hash_table_entry** HashTable){
     createHashEntry(root, HashTable);
 
     // Create a bst node for each soc in the socArr
-    for(int i = 0; i < NUM_OCC; i++){
+    for(int i = 1; i < NUM_OCC; i++){
         bst *temp = createLeaf(root, socArr[i]);
+
+        /*
+        if(dir == 0 && tempHeight > heightL)
+            heightL = tempHeight;
+        else if(dir == 1 && tempHeight > heightR)
+            heightR = tempHeight;
+        tempHeight = 1;
+        numNodes++;
+         */
+
         createHashEntry(temp, HashTable);
     }
+
+    /*
+    // Print experimental values
+    if(heightL > height)
+        height = heightL;
+    if(heightR > height)
+        height = heightR;
+
+    std::cout << "BINARY SEARCH TREE VALUES" << std::endl;
+    std::cout << "\tNumber of Nodes: " << numNodes << std::endl;
+    std::cout << "\tHeight: " << height << std::endl;
+    std::cout << "\tHeight of Left: " << heightL << std::endl;
+    std::cout << "\tHeight of Right: " << heightR << std::endl << std::endl;
+    */
 
     free(socArr);
     return root;
