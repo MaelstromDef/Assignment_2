@@ -1,0 +1,4 @@
+range occupation "Crane" "Shuttle"
+find ratio 2000 2009
+find ratio 1960 1969
+find occupation 15-1099
